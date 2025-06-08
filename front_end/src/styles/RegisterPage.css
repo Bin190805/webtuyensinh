@@ -1,0 +1,22 @@
+.register-bg {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e0e7ff 0%, #dbeafe 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .register-card {
+    max-width: 460px;
+    width: 100%;
+    box-shadow: 0 6px 32px rgba(24, 144, 255, 0.13);
+    border-radius: 20px;
+    padding: 32px 24px;
+    background: #fff;
+  }
+  
+  .register-logo {
+    width: 56px;
+    margin-bottom: 12px;
+  }
+  

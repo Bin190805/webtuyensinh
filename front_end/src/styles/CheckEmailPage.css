@@ -1,0 +1,24 @@
+.check-email-bg {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e0e7ff 0%, #dbeafe 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .check-email-card {
+    max-width: 440px;
+    width: 100%;
+    box-shadow: 0 6px 32px rgba(24, 144, 255, 0.13);
+    border-radius: 20px;
+    padding: 32px 24px;
+    background: #fff;
+    text-align: center;
+  }
+  
+  .check-email-icon {
+    font-size: 48px;
+    color: #1890ff;
+    margin-bottom: 16px;
+  }
+  

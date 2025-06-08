@@ -1,0 +1,12 @@
+.admin-layout-root {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .admin-layout-content {
+    margin-left: 250px; /* Bằng với chiều rộng của sidebar */
+    flex-grow: 1;
+    background-color: #f0f2f5;
+    padding: 24px;
+  }
+  

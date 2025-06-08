@@ -1,0 +1,10 @@
+:root {
+    --app-primary: #285fa8;
+    --app-gradient: linear-gradient(160deg, #285fa8 60%, #4c92ff 100%);
+    --sidebar-text: #f0f8ff;
+    --sidebar-selected-bg: #fff;
+    --sidebar-selected-text: #285fa8;
+    --sidebar-hover-bg: rgba(255,255,255,0.12);
+    --app-bg: #f0f4fa;
+  }
+  

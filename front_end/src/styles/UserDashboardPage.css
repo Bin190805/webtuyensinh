@@ -1,0 +1,23 @@
+.dashboard-page {
+    max-width: 550px;
+    margin: 0 auto;
+    padding: 36px 8px;
+  }
+  
+  .profile-card {
+    box-shadow: 0 2px 24px #285fa820;
+    border-radius: 18px;
+    background: #fff;
+  }
+  
+  .profile-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .ant-descriptions-item-label {
+    color: #285fa8 !important;
+  }
+  

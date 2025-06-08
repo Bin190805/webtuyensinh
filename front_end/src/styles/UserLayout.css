@@ -1,0 +1,14 @@
+.user-layout-root {
+    display: flex;
+    min-height: 100vh;
+    background: #f5f7fb;
+  }
+  
+  .user-layout-content {
+    flex: 1;
+    padding: 36px 48px;
+    min-width: 0;
+    background: #f5f7fb;
+    /* Có thể thêm hiệu ứng bo góc, shadow nếu thích */
+  }
+  
