@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi import APIRouter, UploadFile, File, HTTPException ## Tạo router riêng 
 import os
 
 router = APIRouter()
@@ -8,8 +8,10 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @router.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
+    ## quy định các ảnh phải đúng định dangk
     if file.content_type not in ["image/jpeg", "image/png", "application/pdf"]:
         raise HTTPException(400, "Invalid file type")
+    ## gắn và ghi vào dir upload_dir
     file_path = os.path.join(UPLOAD_DIR, file.filename)
     with open(file_path, "wb") as buffer:
         buffer.write(await file.read())
