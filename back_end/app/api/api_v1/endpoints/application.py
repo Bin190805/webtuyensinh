@@ -1,5 +1,6 @@
 # app/routers/application_router.py
-from fastapi import APIRouter, HTTPException, Depends, Query
+## Import các thư viên để tạo Router riêng biệt , và yêu cầu bắt buộc
+from fastapi import APIRouter, HTTPException, Depends, Query 
 from pymongo.errors import PyMongoError # Import để bắt lỗi MongoDB cụ thể hơn
 import math # Để tính total_pages
 from typing import Optional, List
@@ -8,6 +9,7 @@ from app.database.database import db
 # Import ApplicationSchema để dùng cho việc tạo hồ sơ (đã có)
 # Import các schema mới cho API lấy danh sách
 from app.schemas.enums import ApplicationStatus
+## Các thư viện cần thiết đã khởi tạo ở folder schema 
 from app.schemas.application_schema import (
     ApplicationSchema, 
     PaginatedApplicationResponse, 
@@ -17,8 +19,10 @@ from app.schemas.application_schema import (
     StatusDetailSchema     # <<< Schema mới
 )
 from datetime import datetime
+## Import thư viện để xác thực tài khoản 
 from app.utils.auth import Auth 
 from bson import ObjectId # Để làm việc với _id của MongoDB
+## Hàm tạo mã đã định nghĩa sẵn
 from app.utils.code_generate import generate_application_code
 
 router = APIRouter()
@@ -32,6 +36,7 @@ async def submit_application(application_payload: ApplicationSchema, current_use
     """
     try:
         user_id = current_user["_id"] 
+        ## Chuyển thành dict bằng phương thức model_dump[]
         application_data = application_payload.model_dump(by_alias=True, exclude_unset=True)
         application_data["userId"] = ObjectId(user_id)
 
@@ -47,7 +52,7 @@ async def submit_application(application_payload: ApplicationSchema, current_use
         application_data["applicationCode"] = generate_application_code()
         application_data["status"] = ApplicationStatus.PENDING.name # Gán mã code "PENDING"
         # ---------------------------------------------
-        
+        ## truy vấn database    
         result = db.applications.insert_one(application_data)
         
         return {
@@ -63,6 +68,7 @@ async def submit_application(application_payload: ApplicationSchema, current_use
 # --- API MỚI: LẤY DANH SÁCH HỒ SƠ THEO USERID ---
 @router.get("/applications", response_model=PaginatedApplicationResponse, summary="Lấy danh sách hồ sơ của người dùng")
 async def get_user_applications(
+    ## Hàm xác thực
     current_user=Depends(Auth()),
     page: int = Query(1, ge=1, description="Số trang hiện tại"),
     limit: int = Query(10, ge=1, le=100, description="Số lượng bản ghi trên mỗi trang"),
@@ -72,6 +78,7 @@ async def get_user_applications(
     date_to: Optional[str] = Query(None, alias="dateTo", description="Lọc đến ngày (YYYY-MM-DD)")
 ):
     try:
+        ## Tính toán số lượng page  bỏ qua 
         user_id = current_user["_id"]
         skip = (page - 1) * limit
 
@@ -120,19 +127,19 @@ async def get_user_applications(
         ]
         
         result = list(db.applications.aggregate(pipeline))
-
+        ##  Nếu không có thì trả vễ mặc định 
         if not result or not result[0]["metadata"]:
             return PaginatedApplicationResponse(
                 pagination=PaginationData(currentPage=page, totalPages=0, totalRecords=0, limit=limit),
                 applications=[]
             )
-
+        ## Tính toán số page 
         total_records = result[0]["metadata"][0]["totalRecords"]
         applications_data = result[0]["data"]
         total_pages = math.ceil(total_records / limit)
 
         processed_applications = [ApplicationListItemSchema.model_validate(app) for app in applications_data]
-        
+        ## hàm trả về với kiểu dữ liệu đã được định nghĩa sẵn 
         return PaginatedApplicationResponse(
             pagination=PaginationData(currentPage=page, totalPages=total_pages, totalRecords=total_records, limit=limit),
             applications=processed_applications
